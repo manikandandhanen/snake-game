@@ -1,0 +1,44 @@
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.snake-game-card {
+  width: 600px;
+}
+
+.header-center {
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  position: relative;
+}
+
+canvas {
+  border: 1px solid black;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.score {
+  position: absolute;
+  top: -37px;
+  right: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: red;
+}
