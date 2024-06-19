@@ -1,0 +1,16 @@
+<div class="container">
+  <mat-card class="snake-game-card">
+    <mat-card-header class="header-center">Snake Game</mat-card-header>
+    <mat-card-content>
+      <div class="game-container">
+        <div class="score">Score: {{ foodEaten }}</div>
+        <canvas #gameCanvas width="400" height="400"></canvas>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="startGame()">
+        Start Game
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
