@@ -7,16 +7,34 @@ import {
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 interface Position {
   x: number;
   y: number;
 }
 
+interface Player {
+  name: string;
+  score: number;
+}
+
 @Component({
   selector: 'snake-game',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    CommonModule,
+  ],
   templateUrl: './snake-game.component.html',
   styleUrls: ['./snake-game.component.scss'],
 })
@@ -35,12 +53,16 @@ export class SnakeGameComponent implements OnInit {
   private speedIncreaseThreshold = 5;
   private snakeSize = 15;
   private foodSize = 10;
+  userName = '';
+  leaderboard: Player[] = [];
+  displayedColumns: string[] = ['index', 'name', 'score'];
 
   constructor() {}
 
   ngOnInit(): void {
     this.ctx = this.gameCanvas.nativeElement.getContext('2d')!;
     this.resetGame();
+    this.loadLeaderboard();
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -64,6 +86,10 @@ export class SnakeGameComponent implements OnInit {
 
   startGame() {
     if (this.isGameRunning) return;
+    if (!this.userName.trim()) {
+      alert('Please enter your name to start the game.');
+      return;
+    }
     this.resetGame();
     this.isGameRunning = true;
     this.setGameSpeed(this.initialSpeed);
@@ -96,6 +122,8 @@ export class SnakeGameComponent implements OnInit {
       this.isGameRunning = false;
       clearInterval(this.gameInterval);
       alert('Game Over!');
+      this.saveScore();
+      this.userName = '';
       return;
     }
 
@@ -170,5 +198,25 @@ export class SnakeGameComponent implements OnInit {
       this.foodSize,
       this.foodSize
     );
+  }
+
+  private saveScore() {
+    const player: Player = { name: this.userName, score: this.foodEaten };
+    const leaderboard = this.loadLeaderboard();
+    leaderboard.push(player);
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    this.leaderboard = this.getSortedLeaderboard(leaderboard);
+  }
+
+  private loadLeaderboard(): Player[] {
+    const leaderboard = localStorage.getItem('leaderboard');
+    if (leaderboard) {
+      return this.getSortedLeaderboard(JSON.parse(leaderboard));
+    }
+    return [];
+  }
+
+  private getSortedLeaderboard(leaderboard: Player[]): Player[] {
+    return leaderboard.sort((a, b) => b.score - a.score).slice(0, 10);
   }
 }

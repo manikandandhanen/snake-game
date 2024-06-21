@@ -1,16 +1,46 @@
 <div class="container">
-  <mat-card class="snake-game-card">
-    <mat-card-header class="header-center">Snake Game</mat-card-header>
-    <mat-card-content>
-      <div class="game-container">
-        <div class="score">Score: {{ foodEaten }}</div>
-        <canvas #gameCanvas width="400" height="400"></canvas>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="startGame()">
-        Start Game
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  <div class="left-panel">
+    <mat-card class="snake-game-card">
+      <mat-card-header class="header-center">Snake Game</mat-card-header>
+      <mat-card-content>
+        <div class="game-container">
+          <div class="score">Score: {{ foodEaten }}</div>
+          <canvas #gameCanvas width="400" height="400"></canvas>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="startGame()">
+          Start Game
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="right-panel">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Enter your name" [(ngModel)]="userName" />
+    </mat-form-field>
+
+    <mat-card class="leaderboard-card">
+      <h3 class="leaderboard-header">Leaderboard</h3>
+
+      <table mat-table [dataSource]="leaderboard" class="mat-elevation-z8">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef>SI.No</th>
+          <td mat-cell *matCellDef="let player; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let player">{{ player.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef>Score</th>
+          <td mat-cell *matCellDef="let player">{{ player.score }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </mat-card>
+  </div>
 </div>
