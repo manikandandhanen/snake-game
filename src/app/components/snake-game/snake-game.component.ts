@@ -124,6 +124,7 @@ export class SnakeGameComponent implements OnInit {
       alert('Game Over!');
       this.saveScore();
       this.userName = '';
+      this.resetGame();
       return;
     }
 
